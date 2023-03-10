@@ -38,8 +38,11 @@ const Checkout = () => {
 
   async function makePayment(values) {
     const stripe = await stripePromise;
+    if (!(values?.firstName || values?.lastName)) {
+      return;
+    }
     const requestBody = {
-      userName: [values.firstName, values.lastName].join(" "),
+      userName: `${values.firstName ?? ""} ${values.lastName ?? ""}`,
       email: values.email,
       products: cart.map(({ id, count }) => ({
         id,
